@@ -2,8 +2,11 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
+  const navigate = useNavigate();
+
   const initialValues = {
     email: '',
     password: '',
@@ -28,6 +31,7 @@ export default function Login() {
         'http://localhost:8080/auth/login',
         values
       );
+      navigate('/home');
       console.log(data);
     } catch (error) {
       console.log(error);
