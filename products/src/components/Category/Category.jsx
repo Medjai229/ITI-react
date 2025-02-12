@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import ProductCard from '../ProductCard/ProductCard';
+import { BeatLoader } from 'react-spinners';
 
 export default function Category() {
   const [category, setCategory] = useState('');
@@ -21,6 +22,7 @@ export default function Category() {
     }
   }
   async function getProducts(category) {
+    setProducts([]);
     try {
       let { data } = await axios.get(
         `https://fakestoreapi.com/products/category/${category}`
@@ -44,17 +46,34 @@ export default function Category() {
     <>
       <div className="container">
         <div className="d-flex justify-content-between gap-3 my-5">
-          {categories.map((category) => (
-            <button
-              className="btn btn-lg btn-outline-secondary col"
-              onClick={(e) => setCategory(e.target.textContent)}
-              key={category}
-            >
-              {category}
-            </button>
-          ))}
+          {categories.length == 0 ? (
+            <BeatLoader speedMultiplier={0.7} className="mx-auto" />
+          ) : (
+            <>
+              {categories.map((category) => (
+                <button
+                  className="btn btn-lg btn-outline-secondary col"
+                  onClick={(e) => setCategory(e.target.textContent)}
+                  key={category}
+                >
+                  {category}
+                </button>
+              ))}
+            </>
+          )}
         </div>
         <div className="row" id="products">
+          {products.length == 0 ? (
+            <div className="d-flex my-5">
+              <BeatLoader speedMultiplier={0.7} className="mx-auto" />
+            </div>
+          ) : (
+            <>
+              {products.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </>
+          )}
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
