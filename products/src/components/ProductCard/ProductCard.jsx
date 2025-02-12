@@ -1,4 +1,5 @@
 import './ProductCard.css';
+import { Link } from 'react-router-dom';
 
 export default function ProductCard({
   product,
@@ -10,13 +11,19 @@ export default function ProductCard({
     <>
       <div className="col-3 mb-4">
         <div className="card">
-          <div className="square-image position-relative">
+          <Link
+            to={`/product/${product.id}`}
+            className="square-image position-relative d-block"
+          >
             <img src={product.image} alt="" />
-          </div>
+          </Link>
           <div className="card-body border-top">
-            <p className="card-title text-nowrap overflow-hidden fw-bold h4 text-center">
+            <Link
+              to={`/product/${product.id}`}
+              className="card-title text-nowrap overflow-hidden fw-bold h4 text-center text-decoration-none d-block"
+            >
               {product.title}
-            </p>
+            </Link>
             <div className="d-flex justify-content-between align-items-center">
               <p className="card-title h5 mt-1">${product.price}</p>
               <p className="card-title h5 mt-1">
