@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import ProductCard from '../ProductCard/ProductCard';
+import { BeatLoader } from 'react-spinners';
 
 export default function () {
   const [products, setProducts] = useState([]);
@@ -39,11 +40,19 @@ export default function () {
             onChange={(e) => setSearchValue(e.target.value)}
           />
         </div>
-        <div className="row" id="products">
-          {searchedProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        {products.length == 0 ? (
+          <div className="d-flex my-5">
+            <BeatLoader speedMultiplier={0.7} className="mx-auto" />
+          </div>
+        ) : (
+          <>
+            <div className="row" id="products">
+              {searchedProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </>
   );
