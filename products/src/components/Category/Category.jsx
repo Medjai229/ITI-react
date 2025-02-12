@@ -50,13 +50,15 @@ export default function Category() {
             <BeatLoader speedMultiplier={0.7} className="mx-auto" />
           ) : (
             <>
-              {categories.map((category) => (
+              {categories.map((cat) => (
                 <button
-                  className="btn btn-lg btn-outline-secondary col"
+                  className={`btn btn-lg col ${
+                    cat === category ? 'btn-secondary' : 'btn-outline-secondary'
+                  }`}
                   onClick={(e) => setCategory(e.target.textContent)}
-                  key={category}
+                  key={cat}
                 >
-                  {category}
+                  {cat}
                 </button>
               ))}
             </>
