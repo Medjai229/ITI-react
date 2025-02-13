@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { TokenContext } from '../../context/TokenContext';
 
 export default function Login() {
+  let { setToken } = useContext(TokenContext);
   const navigate = useNavigate();
 
   const initialValues = {
@@ -31,6 +33,8 @@ export default function Login() {
         'http://localhost:8080/auth/login',
         values
       );
+      localStorage.setItem('token', data.token);
+      setToken(data.token);
       navigate('/home');
       console.log(data);
     } catch (error) {
