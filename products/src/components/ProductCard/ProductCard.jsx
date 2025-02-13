@@ -1,5 +1,7 @@
+import axios from 'axios';
 import './ProductCard.css';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function ProductCard({
   product,
@@ -7,6 +9,21 @@ export default function ProductCard({
   increasePrice,
   decreasePrice,
 }) {
+  async function addCart(id) {
+    let res = await axios.post('https://fakestoreapi.com/carts', {
+      userId: 5,
+      date: new Date(),
+      products: [{ productId: id, quantity: 1 }],
+    });
+    if (res.status) {
+      toast.success('Product Added', {
+        position: 'top-center',
+        autoClose: 2000,
+        closeOnClick: true,
+      });
+    }
+  }
+
   return (
     <>
       <div className="col-3 mb-4">
@@ -31,6 +48,12 @@ export default function ProductCard({
                 <i className="fa-solid fa-star text-warning "></i>
               </p>
             </div>
+            <button
+              className="btn btn-outline-secondary ms-auto"
+              onClick={() => addCart(product.id)}
+            >
+              Add to cart
+            </button>
           </div>
         </div>
       </div>
