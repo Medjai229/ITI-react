@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
 import Home from './components/Home/Home';
 import ProductDetails from './components/ProductDetails';
+import ProtectedRoutes from './components/ProtectedRoutes/ProtectedRoutes';
 
 function App() {
   const routes = createBrowserRouter([
@@ -13,11 +14,32 @@ function App() {
       path: '',
       element: <Layout />,
       children: [
-        { path: 'home', element: <Home /> },
-        { path: 'category', element: <Category /> },
+        {
+          path: 'home',
+          element: (
+            <ProtectedRoutes>
+              <Home />
+            </ProtectedRoutes>
+          ),
+        },
+        {
+          path: 'category',
+          element: (
+            <ProtectedRoutes>
+              <Category />
+            </ProtectedRoutes>
+          ),
+        },
+        {
+          path: 'product/:id',
+          element: (
+            <ProtectedRoutes>
+              <ProductDetails />
+            </ProtectedRoutes>
+          ),
+        },
         { path: 'register', element: <Register /> },
         { path: 'login', element: <Login /> },
-        { path: 'product/:id', element: <ProductDetails /> },
       ],
     },
   ]);
