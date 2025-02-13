@@ -1,13 +1,16 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { TokenContext } from '../../context/TokenContext';
+import { toast } from 'react-toastify';
 
 export default function Login() {
   let { setToken } = useContext(TokenContext);
   const navigate = useNavigate();
+  const location = useLocation();
+  const message = location.state?.message || null;
 
   const initialValues = {
     email: '',
@@ -47,6 +50,16 @@ export default function Login() {
     validationSchema,
     onSubmit: login,
   });
+
+  useEffect(() => {
+    if (message) {
+      toast.warn(message, {
+        position: 'top-center',
+        autoClose: 2000,
+        closeOnClick: true,
+      });
+    }
+  }, [message]);
 
   return (
     <>

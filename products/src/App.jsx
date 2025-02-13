@@ -5,7 +5,7 @@ import Login from './components/Login/Login';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
 import Home from './components/Home/Home';
-import ProductDetails from './components/ProductDetails';
+import ProductDetails from './components/ProductDetails/ProductDetails';
 import ProtectedRoutes from './components/ProtectedRoutes/ProtectedRoutes';
 
 function App() {

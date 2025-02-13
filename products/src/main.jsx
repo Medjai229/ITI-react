@@ -5,12 +5,14 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import App from './App.jsx';
 import TokenContextProvider from './context/TokenContext.jsx';
 import PaginationContextProvider from './context/PaginationContext.jsx';
+import { ToastContainer } from 'react-toastify';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <TokenContextProvider>
       <PaginationContextProvider>
         <App />
+        <ToastContainer />
       </PaginationContextProvider>
     </TokenContextProvider>
   </StrictMode>

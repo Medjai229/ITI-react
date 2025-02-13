@@ -4,6 +4,11 @@ export default function ProtectedRoutes({ children }) {
   if (localStorage.getItem('token')) {
     return children;
   } else {
-    return <Navigate to="/login"></Navigate>;
+    return (
+      <Navigate
+        to="/login"
+        state={{ message: 'Not allowed!, Please sign in' }}
+      ></Navigate>
+    );
   }
 }
