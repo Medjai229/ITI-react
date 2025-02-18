@@ -1,12 +1,16 @@
-import Navbar from './components/Navbar/Navbar';
-import Category from './components/Category/Category';
-import Register from './components/Register/Register';
-import Login from './components/Login/Login';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
-import Home from './components/Home/Home';
-import ProductDetails from './components/ProductDetails/ProductDetails';
 import ProtectedRoutes from './components/ProtectedRoutes/ProtectedRoutes';
+import { lazy, Suspense } from 'react';
+
+const Home = lazy(() => import('./components/Home/Home'));
+const Category = lazy(() => import('./components/Category/Category'));
+const ProductDetails = lazy(() =>
+  import('./components/ProductDetails/ProductDetails')
+);
+const Cart = lazy(() => import('./components/Cart/Cart'));
+const Register = lazy(() => import('./components/Register/Register'));
+const Login = lazy(() => import('./components/Login/Login'));
 
 function App() {
   const routes = createBrowserRouter([
@@ -18,7 +22,9 @@ function App() {
           path: 'home',
           element: (
             <ProtectedRoutes>
-              <Home />
+              <Suspense>
+                <Home />
+              </Suspense>
             </ProtectedRoutes>
           ),
         },
@@ -26,7 +32,9 @@ function App() {
           path: 'category',
           element: (
             <ProtectedRoutes>
-              <Category />
+              <Suspense>
+                <Category />
+              </Suspense>
             </ProtectedRoutes>
           ),
         },
@@ -34,12 +42,38 @@ function App() {
           path: 'product/:id',
           element: (
             <ProtectedRoutes>
-              <ProductDetails />
+              <Suspense>
+                <ProductDetails />
+              </Suspense>
             </ProtectedRoutes>
           ),
         },
-        { path: 'register', element: <Register /> },
-        { path: 'login', element: <Login /> },
+        {
+          path: 'cart',
+          element: (
+            <ProtectedRoutes>
+              <Suspense>
+                <Cart />
+              </Suspense>
+            </ProtectedRoutes>
+          ),
+        },
+        {
+          path: 'register',
+          element: (
+            <Suspense>
+              <Register />
+            </Suspense>
+          ),
+        },
+        {
+          path: 'login',
+          element: (
+            <Suspense>
+              <Login />
+            </Suspense>
+          ),
+        },
       ],
     },
   ]);

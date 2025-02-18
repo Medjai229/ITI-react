@@ -39,11 +39,11 @@ export default function ProductDetails() {
 
   function chooseStar(i) {
     if (i < Math.floor(product?.rating?.rate)) {
-      return 'fa-solid fa-star';
+      return 'fa-solid fa-star text-warning';
     } else if (i < product?.rating?.rate) {
-      return 'fa-solid fa-star-half-stroke';
+      return 'fa-solid fa-star-half-stroke text-warning';
     } else {
-      return 'fa-regular fa-star';
+      return 'fa-regular fa-star text-warning';
     }
   }
 

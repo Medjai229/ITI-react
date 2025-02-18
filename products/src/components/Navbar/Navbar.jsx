@@ -1,9 +1,11 @@
 import React, { useContext } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { TokenContext } from '../../context/TokenContext';
+import { useSelector } from 'react-redux';
 
 export default function Navbar() {
   let { token, setToken } = useContext(TokenContext);
+  const { length } = useSelector((state) => state.cart);
   const navigate = useNavigate();
 
   function logout() {
@@ -50,6 +52,15 @@ export default function Navbar() {
                       to={'/category'}
                     >
                       Category
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink
+                      className="nav-link"
+                      aria-current="page"
+                      to={'/cart'}
+                    >
+                      Cart {length}
                     </NavLink>
                   </li>
                   <li className="nav-item">
