@@ -1,77 +1,85 @@
-import { useState } from 'react';
-import wdnstool from './assets/1.png';
-import gldnwtch from './assets/2.png';
-import gpu from './assets/3.png';
-import hrddsk from './assets/4.png';
-import ProductCard from './ProductCard';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Layout from './components/Layout/Layout';
+import ProtectedRoutes from './components/ProtectedRoutes/ProtectedRoutes';
+import { lazy, Suspense } from 'react';
+
+const Home = lazy(() => import('./components/Home/Home'));
+const Category = lazy(() => import('./components/Category/Category'));
+const ProductDetails = lazy(() =>
+  import('./components/ProductDetails/ProductDetails')
+);
+const Cart = lazy(() => import('./components/Cart/Cart'));
+const Register = lazy(() => import('./components/Register/Register'));
+const Login = lazy(() => import('./components/Login/Login'));
 
 function App() {
-  const [products, setNewProducts] = useState([
-    { id: 1, title: 'Wooden Stool', price: 20, image: wdnstool },
-    { id: 2, title: 'Golden Watch', price: 100, image: gldnwtch },
-    { id: 3, title: 'Graphics Card', price: 150, image: gpu },
-    { id: 4, title: 'Hard Disk', price: 70, image: hrddsk },
+  const routes = createBrowserRouter([
+    {
+      path: '',
+      element: <Layout />,
+      children: [
+        {
+          path: 'home',
+          element: (
+            <ProtectedRoutes>
+              <Suspense>
+                <Home />
+              </Suspense>
+            </ProtectedRoutes>
+          ),
+        },
+        {
+          path: 'category',
+          element: (
+            <ProtectedRoutes>
+              <Suspense>
+                <Category />
+              </Suspense>
+            </ProtectedRoutes>
+          ),
+        },
+        {
+          path: 'product/:id',
+          element: (
+            <ProtectedRoutes>
+              <Suspense>
+                <ProductDetails />
+              </Suspense>
+            </ProtectedRoutes>
+          ),
+        },
+        {
+          path: 'cart',
+          element: (
+            <ProtectedRoutes>
+              <Suspense>
+                <Cart />
+              </Suspense>
+            </ProtectedRoutes>
+          ),
+        },
+        {
+          path: 'register',
+          element: (
+            <Suspense>
+              <Register />
+            </Suspense>
+          ),
+        },
+        {
+          path: 'login',
+          element: (
+            <Suspense>
+              <Login />
+            </Suspense>
+          ),
+        },
+      ],
+    },
   ]);
-  const [searchValue, setNewSearch] = useState('');
-  console.log(searchValue);
-
-  function deleteProduct(id) {
-    let newProducts = structuredClone(products);
-
-    newProducts = newProducts.filter((product) => product.id != id);
-
-    setNewProducts(newProducts);
-  }
-
-  function increasePrice(id) {
-    let newProducts = structuredClone(products);
-
-    const newProduct = newProducts.find((product) => product.id == id);
-    newProduct.price += 10;
-
-    setNewProducts(newProducts);
-  }
-
-  function decreasePrice(id) {
-    let newProducts = structuredClone(products);
-
-    const newProduct = newProducts.find((product) => product.id == id);
-    newProduct.price -= 10;
-    if (newProduct.price < 0) {
-      newProduct.price = 0;
-    }
-
-    setNewProducts(newProducts);
-  }
-
-  const searchedProducts = products.filter((product) =>
-    product.title.toLowerCase().includes(searchValue.toLowerCase())
-  );
-
   return (
     <>
-      <div className="container">
-        <div className="d-flex my-5">
-          <input
-            type="text"
-            className="form-control me-3"
-            id="search"
-            placeholder="Search..."
-            onChange={(e) => setNewSearch(e.target.value)}
-          />
-        </div>
-        <div className="row" id="products">
-          {searchedProducts.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              deleteProduct={deleteProduct}
-              increasePrice={increasePrice}
-              decreasePrice={decreasePrice}
-            />
-          ))}
-        </div>
-      </div>
+      <RouterProvider router={routes}></RouterProvider>
     </>
   );
 }
