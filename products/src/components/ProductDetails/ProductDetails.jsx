@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { BeatLoader } from 'react-spinners';
+import { useMutation } from '@tanstack/react-query';
 
 export default function ProductDetails() {
   const [product, setProduct] = useState({});
@@ -28,13 +29,26 @@ export default function ProductDetails() {
       date: new Date(),
       products: [{ productId: id, quantity: 1 }],
     });
-    if (res.status) {
-      toast.success('Product Added', {
-        position: 'top-center',
-        autoClose: 2000,
-        closeOnClick: true,
-      });
-    }
+  }
+
+  const mutation = useMutation({
+    mutationFn: addCart,
+  });
+
+  if (mutation.isSuccess) {
+    toast.success('Product Added', {
+      position: 'top-center',
+      autoClose: 2000,
+      closeOnClick: true,
+    });
+  }
+
+  if (mutation.isError) {
+    toast.error('Failed to add product', {
+      position: 'top-center',
+      autoClose: 2000,
+      closeOnClick: true,
+    });
   }
 
   function chooseStar(i) {
@@ -85,7 +99,7 @@ export default function ProductDetails() {
 
               <button
                 className="btn btn-outline-secondary px-4 py-2"
-                onClick={() => addCart(product.id)}
+                onClick={() => mutation.mutate(product.id)}
               >
                 Add to Cart
               </button>

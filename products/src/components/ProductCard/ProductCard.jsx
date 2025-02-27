@@ -2,6 +2,7 @@ import axios from 'axios';
 import './ProductCard.css';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useMutation } from '@tanstack/react-query';
 
 export default function ProductCard({
   product,
@@ -15,17 +16,31 @@ export default function ProductCard({
       date: new Date(),
       products: [{ productId: id, quantity: 1 }],
     });
-    if (res.status) {
-      toast.success('Product Added', {
-        position: 'top-center',
-        autoClose: 2000,
-        closeOnClick: true,
-      });
-    }
+  }
+
+  const mutation = useMutation({
+    mutationFn: addCart,
+  });
+
+  if (mutation.isSuccess) {
+    toast.success('Product Added', {
+      position: 'top-center',
+      autoClose: 2000,
+      closeOnClick: true,
+    });
+  }
+
+  if (mutation.isError) {
+    toast.error('Failed to add product', {
+      position: 'top-center',
+      autoClose: 2000,
+      closeOnClick: true,
+    });
   }
 
   return (
     <>
+      {console.log(mutation.isSuccess)}
       <div className="col-3 mb-4">
         <div className="card">
           <Link
@@ -50,7 +65,7 @@ export default function ProductCard({
             </div>
             <button
               className="btn btn-outline-secondary ms-auto"
-              onClick={() => addCart(product.id)}
+              onClick={() => mutation.mutate(product.id)}
             >
               Add to cart
             </button>
